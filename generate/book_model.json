@@ -17,17 +17,6 @@
         ]
     },
     {
-        "title": "Numerical Root Finding",
-        "contents": [
-            {
-                "name": "The Newton Method",
-                "notebook_path": "notebooks/week3/newton_method.jl",
-                "video_id": "",
-                "preview_image_url": ""
-            }
-        ]
-    }, 
-    {
         "title": "Analysis und numerische Mathematik",
         "contents":[
             {
