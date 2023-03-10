@@ -274,7 +274,7 @@ function sidebar_code(book_model)
 	</div>
     <h1>$(href("$(SLASH_PREPATH)/",TITLE))</h1>
     <div style="line-height:18px; font-size: 15px; opacity: 0.85">by $(INSTRUCTORS)</div>
-	<div style="line-height:18px; font-size: 15px; opacity: 0.85">by $(SUBTITLE)</div>
+	<div style="line-height:18px; font-size: 15px; opacity: 0.85">$(SUBTITLE)</div>
 	</div>
     <br>
     <style>
