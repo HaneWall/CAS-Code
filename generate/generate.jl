@@ -52,22 +52,22 @@ md"""
 """
 
 # ╔═╡ 2bee2fc7-3322-457f-a835-028c80eaf059
-TITLE = "CAS"
+TITLE = "Computerorientierte Mathematik"
 
 # ╔═╡ a0057e4c-0bcf-4970-8a2b-0412ad5af510
-SUBTITLE = "Content and Code"
+SUBTITLE = "Code in Julia"
 
 # ╔═╡ 4be56e57-fea0-4fbe-9659-44bed594b1b2
 INSTITUTION = "University of Rostock"
 
 # ╔═╡ c9f17f9f-766a-4137-92c5-f8173561a7bc
-INSTITUTION_URL = "https://www.tinbergen.nl"
+INSTITUTION_URL = "http://www.jstarke.eu"
 
 # ╔═╡ ab7186a4-2287-41da-a939-70f142bfeacd
 TERM = "2023"
 
 # ╔═╡ a31d893d-2cde-4228-a506-6af013fe1f3e
-LOGO_FILE = "julia-logo.svg"
+LOGO_FILE = "Uni-Logo.svg"
 
 # ╔═╡ dbb5e02a-2485-4ada-98d1-cc24fd6fc418
 md"""
