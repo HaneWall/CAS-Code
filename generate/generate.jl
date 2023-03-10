@@ -55,7 +55,7 @@ md"""
 TITLE = "Computerorientierte Mathematik"
 
 # ╔═╡ a0057e4c-0bcf-4970-8a2b-0412ad5af510
-SUBTITLE = "Translated code in Julia by H. Wallner"
+SUBTITLE = "Translated code to Julia by H. Wallner"
 
 # ╔═╡ 4be56e57-fea0-4fbe-9659-44bed594b1b2
 INSTITUTION = "University of Rostock"
@@ -104,7 +104,6 @@ show_section_number = false
 
 # ╔═╡ 01a2336a-5c04-4d5a-bb0b-a9c704517dbf
 pages = [
-	(page = "/logistics/", title = "Class Logistics"),
 	(page = "/syllabus/", title = "Syllabus"),
 	(page = "/installation/", title = "Software installation"),
 	(page = "/cheatsheets/", title = "Cheatsheets")
@@ -114,7 +113,7 @@ pages = [
 SLASH_PREPATH = !isempty(PREPATH) ? "/" * PREPATH : ""
 
 # ╔═╡ 02e00e09-76a5-4f38-8557-4d9caf280b4c
-homepage = (page = "/index.html", path = "$SLASH_PREPATH/", title = "Welcome")
+homepage = (page = "/index.html", path = "$SLASH_PREPATH/", title = "Willkommen")
 
 # ╔═╡ d83ee9b9-d255-4217-a776-3b0f4f168c8f
 @bind regenerate Button("Regenerate!")
@@ -275,7 +274,7 @@ function sidebar_code(book_model)
 	</div>
     <h1>$(href("$(SLASH_PREPATH)/",TITLE))</h1>
     <div style="line-height:18px; font-size: 15px; opacity: 0.85">by $(INSTRUCTORS)</div>
-	<h3>$(SUBTITLE)</h3>   
+	<div style="line-height:18px; font-size: 15px; opacity: 0.85">by $(SUBTITLE)</div>
 	</div>
     <br>
     <style>
