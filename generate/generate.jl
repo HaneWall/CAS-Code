@@ -55,7 +55,7 @@ md"""
 TITLE = "Computerorientierte Mathematik"
 
 # ╔═╡ a0057e4c-0bcf-4970-8a2b-0412ad5af510
-SUBTITLE = "Translated code to Julia by H. Wallner"
+SUBTITLE = "Code translated to Julia by H. Wallner"
 
 # ╔═╡ 4be56e57-fea0-4fbe-9659-44bed594b1b2
 INSTITUTION = "University of Rostock"
@@ -285,7 +285,7 @@ function sidebar_code(book_model)
     <br>
     $(map(enumerate(book_model)) do (chapter_number, chap)
 		@htl("""
-		<div class="course-section">Module $(chapter_number): $(chap.title)</div>
+		<div class="course-section">Kapitel $(chapter_number): $(chap.title)</div>
 		
 		$(map(enumerate(chap.contents)) do (section_number, section)
 
