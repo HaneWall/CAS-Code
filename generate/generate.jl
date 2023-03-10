@@ -55,13 +55,13 @@ md"""
 TITLE = "Computerorientierte Mathematik"
 
 # ╔═╡ a0057e4c-0bcf-4970-8a2b-0412ad5af510
-SUBTITLE = "Code in Julia"
+SUBTITLE = "Translated code in Julia by H. Wallner"
 
 # ╔═╡ 4be56e57-fea0-4fbe-9659-44bed594b1b2
 INSTITUTION = "University of Rostock"
 
 # ╔═╡ c9f17f9f-766a-4137-92c5-f8173561a7bc
-INSTITUTION_URL = "http://www.jstarke.eu"
+INSTITUTION_URL = "https://www.mathematik.uni-rostock.de"
 
 # ╔═╡ ab7186a4-2287-41da-a939-70f142bfeacd
 TERM = "2023"
@@ -222,9 +222,9 @@ end
 
 # ╔═╡ 3e93e57c-3660-416f-9874-d43abf99e60e
 INSTRUCTORS = [
-	(name = "J. Starke", url = ""),
-	(name = "H. Kösters", url = ""),
-	(name = "J. Schlage-Puchta", url = "")
+	(name = "J. Starke", url = "http://www.jstarke.eu"),
+	(name = "H. Kösters", url = "https://www.mathematik.uni-rostock.de/unser-institut/professuren-apl-prof/wahrscheinlichkeitstheorie/prof-dr-holger-koesters/"),
+	(name = "J. Schlage-Puchta", url = "http://www.math.uni-rostock.de/~schlage-puchta/ZahlTheo.html")
 ] |> instructors
 
 # ╔═╡ d78c58e5-3ecb-45ee-972e-20fc90ece3cc
@@ -266,7 +266,7 @@ function sidebar_code(book_model)
     <div class="container sidebar-sticky">
     <div class="sidebar-about">
     <br>
-    <img src="$(path_to_asset(LOGO_FILE))" style="margin-left:1em; width: 80px; height: auto; display: inline">
+    <img src="$(path_to_asset(LOGO_FILE))" style="margin-left:1em; width: 400px; height: auto; display: inline">
     <div style="font-weight: bold; margin-bottom: 0.5em">
 	$(href("$(SLASH_PREPATH)/semesters/", TERM))
 	<span style="opacity: 0.6;">|
