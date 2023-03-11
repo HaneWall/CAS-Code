@@ -22,7 +22,7 @@ jobs:
             - name: Install Julia
               uses: julia-actions/setup-julia@v1
               with:
-                  version: 1.7
+                  version: 1.8
             - name: Run Pluto notebooks and generate website
               run: |
                 # Save create package environment from notebook

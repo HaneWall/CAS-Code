@@ -52,7 +52,7 @@ md"""
 """
 
 # ╔═╡ 2bee2fc7-3322-457f-a835-028c80eaf059
-TITLE = "Computerorientierte Mathematik"
+TITLE = "Buch Computerorientierte Mathematik"
 
 # ╔═╡ a0057e4c-0bcf-4970-8a2b-0412ad5af510
 SUBTITLE = "Code translated to Julia by H. Wallner"
