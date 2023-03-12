@@ -2,13 +2,7 @@
     {
         "title": "Einführung",
         "contents": [
-            {
-                "name": "Julia Basics",
-                "notebook_path": "notebooks/basic_syntax.jl",
-                "video_id": "",
-                "preview_image_url": ""
-            },
-	   {
+	        {
                 "name": "GitHub & Open Source Software",
                 "notebook_path": "notebooks/week12/how_to_collaborate_on_software.jl",
                 "video_id": "7N9Vvc8amGM",
@@ -20,8 +14,27 @@
         "title": "Analysis und numerische Mathematik",
         "contents":[
             {
+                "name": "Differenzial- und Integralrechnung",
+                "notebook_path": "notebooks/chapter_2_1/Differenzial_und_Integralrechnung.jl",
+                "video_id": "",
+                "preview_image_url": ""
+            },
+            {
                 "name": "Folgen, Grenzwerte und Konvergenz", 
                 "notebook_path": "notebooks/chapter_2_2/Folgen_Grenzwerte_Konvergenz.jl",
+                "video_id": "",
+                "preview_image_url": ""
+            },
+            {
+                "name": "Funktionen und Stetigkeit von Funktionen",
+                "notebook_path": "notebooks/chapter_2_3/Funktionen_und_Stetigkeit.jl",
+                "video_id": "", 
+                "preview_image_url": ""
+
+            },
+            {   
+                "name" : "Ableitungen von Funktionen und Linearisierung", 
+                "notebook_path": "notebooks/chapter_2_4/Ableitungen_von_Funktionen.jl",
                 "video_id": "",
                 "preview_image_url": ""
             }

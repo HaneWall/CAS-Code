@@ -58,7 +58,7 @@ TITLE = "Buch Computerorientierte Mathematik"
 SUBTITLE = "Anwendungen, Algorithmen und Strukturen"
 
 # ╔═╡ 4be56e57-fea0-4fbe-9659-44bed594b1b2
-INSTITUTION = "Institute of Mathmatics"
+INSTITUTION = "Institute of Mathematics"
 
 # ╔═╡ c9f17f9f-766a-4137-92c5-f8173561a7bc
 INSTITUTION_URL = "https://www.mathematik.uni-rostock.de"
@@ -274,7 +274,7 @@ function sidebar_code(book_model)
 	</span>
 	</div>
     <h1>$(href("$(SLASH_PREPATH)/",TITLE))</h1>
-	<h2>$(SUBTITLE))</h2>	
+	<h2>$(SUBTITLE)</h2>	
     <div style="line-height:18px; font-size: 15px; opacity: 0.85">by $(INSTRUCTORS)</div>
 	<div style="line-height:18px; font-size: 15px; opacity: 0.85">Code translated to Julia by H.Wallner</div>
 	</div>
