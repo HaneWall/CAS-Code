@@ -55,10 +55,10 @@ md"""
 TITLE = "Buch Computerorientierte Mathematik"
 
 # ╔═╡ a0057e4c-0bcf-4970-8a2b-0412ad5af510
-SUBTITLE = "Code translated to Julia by H. Wallner"
+SUBTITLE = "Anwendungen, Algorithmen und Strukturen"
 
 # ╔═╡ 4be56e57-fea0-4fbe-9659-44bed594b1b2
-INSTITUTION = "University of Rostock"
+INSTITUTION = "Institute of Mathmatics"
 
 # ╔═╡ c9f17f9f-766a-4137-92c5-f8173561a7bc
 INSTITUTION_URL = "https://www.mathematik.uni-rostock.de"
@@ -265,7 +265,8 @@ function sidebar_code(book_model)
     <div class="container sidebar-sticky">
     <div class="sidebar-about">
     <br>
-    <img src="$(path_to_asset(LOGO_FILE))" style="margin-left:1em; width: 250px; height: auto; display: inline">
+    <img src="$(path_to_asset(LOGO_FILE))" style="margin-left:1em; width: 230px; height: auto; display: inline">
+	<img src="$(root_url)/assets/julia-logo-color.svg" style="margin-left:3em; width: 80px; height: auto; display: inline">
     <div style="font-weight: bold; margin-bottom: 0.5em">
 	$(href("$(SLASH_PREPATH)/semesters/", TERM))
 	<span style="opacity: 0.6;">|
@@ -273,8 +274,9 @@ function sidebar_code(book_model)
 	</span>
 	</div>
     <h1>$(href("$(SLASH_PREPATH)/",TITLE))</h1>
+	<h2>$(SUBTITLE))</h2>	
     <div style="line-height:18px; font-size: 15px; opacity: 0.85">by $(INSTRUCTORS)</div>
-	<div style="line-height:18px; font-size: 15px; opacity: 0.85">$(SUBTITLE)</div>
+	<div style="line-height:18px; font-size: 15px; opacity: 0.85">Code translated to Julia by H.Wallner</div>
 	</div>
     <br>
     <style>
