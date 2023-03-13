@@ -21,6 +21,19 @@ md"""
 Es gab ein mal vor langer Zeit ein paar Computerfreaks die den Linux-Kernel in einen Open-Source Projekt entwickelten. Viele hatten schöne Ideen, andere hatten weniger gute Ideen und dritte verwirklichten ihre Ideen auf Versionen des Projektes die schon lange überholt waren. Eine Lösung musste her. Wie kann jeder auf die aktuelle Version zugreifen? Wie kann man Vorschläge zur Verbesserung anbieten, die sich schnell in das "main" Projekt einspeisen lassen? Als Antwort entwickelten eben jene Computerfreaks quasi als Nebenprodukt Git - eine freie Software zur verteilten Versionsverwaltung. 
 """
 
+# ╔═╡ 929d7f11-5e16-4d00-a33b-97d25cc3a0aa
+html"""
+<div style="text-align:center;">
+<img src="https://imgs.xkcd.com/comics/git.png" class="center" style="max-height:340px;"></img> 
+</div>
+from https://xkcd.com/1597/
+"""
+
+# ╔═╡ aaf2e9e7-ff43-4229-8a58-aa891592043e
+md"""
+> Sowohl in der Industrie als auch in der Forschung ist git de facto der Standard. Lasst uns einen kleinen Einblick erhaschen. 
+"""
+
 # ╔═╡ ef4eea24-bc1c-43be-b9b6-d073ac2433cf
 md"""
 
@@ -182,11 +195,6 @@ Julia packages are _open source_, which means that you are allowed (and encourag
 If you made some good changes on your fork then you can suggest to changes to the original project by submitting your code as a _**Pull Request (PR)**_. This is a feature built-in to GitHub, and this is how most code collaboration happens online.
 """
 
-# ╔═╡ 3229f0aa-54d1-43f4-a6aa-cf212620ae13
-md"""
-> Video tutorial will be available here after the live lecture.
-"""
-
 # ╔═╡ bbb59b45-de20-41c1-b5dd-079fc51655f2
 md"""
 ## _After_ the Pull Request
@@ -223,7 +231,7 @@ To follow this introduction, you will need:
 
 # ╔═╡ dc112303-061e-4e53-8f58-cf9ea0f556f1
 md"""
-> Video tutorial will be available here after the live lecture.
+> Learn these ideas and you are good to go. 
 """
 
 # ╔═╡ d400d538-4f73-4490-ad68-aedbb57cd70f
@@ -275,11 +283,6 @@ md"""
 # How to fork and contribute code
 
 
-"""
-
-# ╔═╡ ea12c669-5429-4bf3-af03-378843ca8838
-md"""
-> Video tutorial will be available here after the live lecture.
 """
 
 # ╔═╡ aeafbdbb-4aeb-452e-a21b-d2c8ec48c64e
@@ -595,7 +598,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.8.5"
 manifest_format = "2.0"
-project_hash = "9990ecd74c3d2cd83fc9120773c8000eebde488e"
+project_hash = "3d60ea42fd1b7054b0e6a7c640e1526715ccbebc"
 
 [[deps.AbstractPlutoDingetjes]]
 deps = ["Pkg"]
@@ -854,6 +857,8 @@ version = "17.4.0+0"
 # ╔═╡ Cell order:
 # ╟─10ebd434-adba-11eb-048f-2d084049d48f
 # ╟─c7489a37-91e2-432d-a159-445510995199
+# ╟─929d7f11-5e16-4d00-a33b-97d25cc3a0aa
+# ╟─aaf2e9e7-ff43-4229-8a58-aa891592043e
 # ╟─ef4eea24-bc1c-43be-b9b6-d073ac2433cf
 # ╟─cbe5fcba-3ed7-41a6-8932-2693e370c16c
 # ╟─812002d3-8603-4ffa-8695-2b2da7f0766a
@@ -886,7 +891,6 @@ version = "17.4.0+0"
 # ╟─0faa4042-42f5-4c74-9270-fbf2205920ca
 # ╟─e3fe649e-2733-455a-897d-d4d2d70b9dc6
 # ╟─2dd5d359-eb44-4696-bc83-f257eff95618
-# ╟─3229f0aa-54d1-43f4-a6aa-cf212620ae13
 # ╟─bbb59b45-de20-41c1-b5dd-079fc51655f2
 # ╟─7af9e69c-2b81-4a90-861c-ed737a4a9ec4
 # ╟─b83ade3d-6f8d-4ac8-9255-956d0a348416
@@ -901,7 +905,6 @@ version = "17.4.0+0"
 # ╟─d8c5273f-7ebc-4399-b893-36f742162938
 # ╟─cc1149de-4895-48aa-8335-6dcc78d882c9
 # ╟─d1e48204-79b8-4b0f-8dc7-eb69244068de
-# ╟─ea12c669-5429-4bf3-af03-378843ca8838
 # ╟─aeafbdbb-4aeb-452e-a21b-d2c8ec48c64e
 # ╠═40f9fe4d-ddae-4bdb-aee2-7999e288931a
 # ╠═f7425775-55aa-4e46-a11f-7d981a4cfacc
