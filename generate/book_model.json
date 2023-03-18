@@ -37,6 +37,13 @@
                 "notebook_path": "notebooks/chapter_2_4/Ableitungen_von_Funktionen.jl",
                 "video_id": "",
                 "preview_image_url": ""
+                
+            },
+            {   
+                "name" : "Iterative Abbildungen und Banachscher Fixpunktsatz",
+                "notebook_path": "notebooks/chapter_2_5/Iterative_Abbildungen.jl",
+                "video_id": "",
+                "preview_image_url": ""
             }
         ]
     }

@@ -186,7 +186,7 @@ md"""
 
 # ╔═╡ 03963a74-23be-490e-95ff-a33b698e3242
 md"""
-Logistische Abbildung: $a_{n+1} = \lambda a_{n} (1 - a_{n})$ für $\lambda \in \{2.5, 3.3\}$  
+Logistische Abbildung: $a_{n+1} = \lambda a_{n} (1 - a_{n})$ 
 """
 
 # ╔═╡ fbeb701c-424b-4cc0-9447-df98826cbb61
@@ -268,39 +268,74 @@ function logisticmap(λ::Float64, a_start::Float64, iters::Integer)
 end
 
 function bifurcation_logisticmap(λ_start::Float64, λ_end::Float64, a_start::Float64, n_trans::Integer, n_iter::Integer)
-	# Erstellen von leeren Listen deren Inhalte Arrays sein werden. Die Elemente dieser Arrays sind vom Typ Float64. 
+	
+	# Da wir die Größe der Ausgangsarrays schon kennen, empfiehlt es sich diese schon vorab zu initialisieren. Dies fördert die Performance!
 	Δλ = 0.005
 	dim_λ = ceil(Int64, (λ_end - λ_start)/Δλ) + 1
 	dim_R = n_iter - n_trans + 1
-	
+
 	results = zeros(Float64, dim_λ, dim_R)
 	λs = zeros(Float64, dim_λ, dim_R)
-	
+
+	# In Julia können wir mittels enumerate(arr) gleichzeitg über Indizes und Elemente des arr iterieren. (Wir "nummerieren" das Array über das wir iterieren)
 	for (idx, λ) in enumerate(λ_start:Δλ:λ_end)
 		result = logisticmap(λ, a_start, n_iter)
 		res_steady = result[n_trans+1:end]
 		results[idx, :] .= res_steady
 		λs[idx, :] .= λ .* ones(length(res_steady))
 	end
+	
 	return results, λs
 end
 
 
 R, Λ = bifurcation_logisticmap(2.5, 4., 0.5, 500, 1000)
+	
+# Aus unseren Matrizen konstruieren wir nun 2D-Punkte. Diese Punkte speichern wir dann in einen Array points. In Julia kurz und bündig:
+points = [Point2(Λ[idx], R[idx]) for idx in eachindex(R)]
 
-scatter(Λ, R)
-
+# da Vektorgrafiken bei so vielen Punkten sehr groß werden, wählen wir "png" als Output
+CairoMakie.activate!(type="png")
+	
+fig = Figure(resolution = (1000, 800), fontsize=24)
+ax = Axis(fig[1, 1])
+scatter!(ax, points, markersize=3)	
+fig
 end 
 
-# ╔═╡ fd5a3d25-6f86-4adc-99ca-cfabd7b8560b
+# ╔═╡ 05d22520-4480-4e6c-b4bf-1acfe574ba36
+md"""
+## *Newton*-Methode
+"""
+
+# ╔═╡ a1e1f6a9-42cc-4c72-b851-0a72fcb8456c
+let 
+
+function newtonmethod(x_new::Real, ϵ_tol::Real, g::Function, Dg::Function)
+	x_old = x_new - ϵ_tol - 1
+	while abs(x_new - x_old) > ϵ_tol 
+		x_old = x_new
+		x_new = x_old - inv(Dg(x_old)) * g(x_old)
+	end
+	return x_new
+end
+
+f(x) = cos(x) - x
+f′(x) = -sin(x) - 1 #' = \prime<TAB>
+
+y = newtonmethod(0.5, 1e-5, f, f′)
+
+end
+
+# ╔═╡ c69a5910-65a5-4547-b65b-6fcea45f7882
+md"""
+## Vergleich: Fixpoint, *Newton* 
+"""
+
+# ╔═╡ 016c923f-ab09-4137-ba0e-af1d5cf7a30c
+let 
 
 
-# ╔═╡ 80f1c581-ced8-4343-8fa6-01cf1dab9d72
-let
-a = Array{Float64}[]
-push!(a, [1, 2])
-push!(a, [2, 3])
-a[1, :]
 end
 
 # ╔═╡ 74856e8b-42d7-4b2a-bc6d-1e03fd7bd00a
@@ -328,7 +363,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.8.5"
 manifest_format = "2.0"
-project_hash = "a60c7a97cc3bde5009566323d3d59e8af2e04668"
+project_hash = "dcd762971a5516e3fc8dfa2b3a8cc49e902482c4"
 
 [[deps.AbstractFFTs]]
 deps = ["ChainRulesCore", "LinearAlgebra"]
@@ -594,9 +629,9 @@ uuid = "7b1f6079-737a-58dc-b8bc-7a2ca5c1b5ee"
 
 [[deps.FillArrays]]
 deps = ["LinearAlgebra", "Random", "SparseArrays", "Statistics"]
-git-tree-sha1 = "9dec0199898d4d5c1d1b257cbf2cc498afe03a2a"
+git-tree-sha1 = "d3ba08ab64bdfd27234d3f61956c966266757fe6"
 uuid = "1a297f60-69ca-5386-bcde-b61e274b549b"
-version = "0.13.8"
+version = "0.13.7"
 
 [[deps.FixedPointNumbers]]
 deps = ["Statistics"]
@@ -758,10 +793,10 @@ uuid = "bc367c6b-8a6b-528e-b4bd-a4b897500b49"
 version = "0.9.8"
 
 [[deps.Imath_jll]]
-deps = ["Artifacts", "JLLWrappers", "Libdl"]
-git-tree-sha1 = "3d09a9f60edf77f8a4d99f9e015e8fbf9989605d"
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
+git-tree-sha1 = "87f7662e03a649cffa2e05bf19c303e168732d3e"
 uuid = "905a6f67-0a94-5f89-b386-d35d92009cd1"
-version = "3.1.7+0"
+version = "3.1.2+0"
 
 [[deps.IndirectArrays]]
 git-tree-sha1 = "012e604e1c7458645cb8b436f8fba789a51b257f"
@@ -1073,10 +1108,10 @@ uuid = "52e1d378-f018-4a11-a4be-720524705ac7"
 version = "0.3.2"
 
 [[deps.OpenEXR_jll]]
-deps = ["Artifacts", "Imath_jll", "JLLWrappers", "Libdl", "Zlib_jll"]
-git-tree-sha1 = "a4ca623df1ae99d09bc9868b008262d0c0ac1e4f"
+deps = ["Artifacts", "Imath_jll", "JLLWrappers", "Libdl", "Pkg", "Zlib_jll"]
+git-tree-sha1 = "923319661e9a22712f24596ce81c54fc0366f304"
 uuid = "18a262bb-aa17-5467-a713-aee519bc75cb"
-version = "3.1.4+0"
+version = "3.1.1+0"
 
 [[deps.OpenLibm_jll]]
 deps = ["Artifacts", "Libdl"]
@@ -1217,9 +1252,9 @@ version = "8.0.1001+0"
 
 [[deps.QuadGK]]
 deps = ["DataStructures", "LinearAlgebra"]
-git-tree-sha1 = "6ec7ac8412e83d57e313393220879ede1740f9ee"
+git-tree-sha1 = "786efa36b7eff813723c4849c90456609cf06661"
 uuid = "1fd47b50-473d-5c70-9696-f719f8f3bcdc"
-version = "2.8.2"
+version = "2.8.1"
 
 [[deps.REPL]]
 deps = ["InteractiveUtils", "Markdown", "Sockets", "Unicode"]
@@ -1400,9 +1435,9 @@ version = "1.3.0"
 
 [[deps.StructArrays]]
 deps = ["Adapt", "DataAPI", "GPUArraysCore", "StaticArraysCore", "Tables"]
-git-tree-sha1 = "521a0e828e98bb69042fec1809c1b5a680eb7389"
+git-tree-sha1 = "b03a3b745aa49b566f128977a7dd1be8711c5e71"
 uuid = "09ab397b-f2b6-538f-b94a-2f83cf4a842a"
-version = "0.6.15"
+version = "0.6.14"
 
 [[deps.SuiteSparse]]
 deps = ["Libdl", "LinearAlgebra", "Serialization", "SparseArrays"]
@@ -1421,9 +1456,9 @@ version = "1.0.1"
 
 [[deps.Tables]]
 deps = ["DataAPI", "DataValueInterfaces", "IteratorInterfaceExtensions", "LinearAlgebra", "OrderedCollections", "TableTraits", "Test"]
-git-tree-sha1 = "1544b926975372da01227b382066ab70e574a3ec"
+git-tree-sha1 = "c79322d36826aa2f4fd8ecfa96ddb47b174ac78d"
 uuid = "bd369af6-aec1-5ad0-b16a-f7cc5008161c"
-version = "1.10.1"
+version = "1.10.0"
 
 [[deps.Tar]]
 deps = ["ArgTools", "SHA"]
@@ -1650,8 +1685,10 @@ version = "3.5.0+0"
 # ╠═fbeb701c-424b-4cc0-9447-df98826cbb61
 # ╟─3c8b2145-a7b8-4e67-aaf1-f7559b66a0ff
 # ╠═c5f2ce10-d6d8-46df-9e94-9a5c7858e597
-# ╠═fd5a3d25-6f86-4adc-99ca-cfabd7b8560b
-# ╠═80f1c581-ced8-4343-8fa6-01cf1dab9d72
+# ╟─05d22520-4480-4e6c-b4bf-1acfe574ba36
+# ╠═a1e1f6a9-42cc-4c72-b851-0a72fcb8456c
+# ╟─c69a5910-65a5-4547-b65b-6fcea45f7882
+# ╠═016c923f-ab09-4137-ba0e-af1d5cf7a30c
 # ╟─74856e8b-42d7-4b2a-bc6d-1e03fd7bd00a
 # ╠═e015a9f6-8d60-43bb-a687-dfd9b2e66a84
 # ╠═e70eb389-0895-455a-823d-d83efede2365
