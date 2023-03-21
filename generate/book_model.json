@@ -44,6 +44,12 @@
                 "notebook_path": "notebooks/chapter_2_5/Iterative_Abbildungen.jl",
                 "video_id": "",
                 "preview_image_url": ""
+            }, 
+            {
+                "name" : "Numerische Verfahren zur Nullstellenbestimmung",
+                "notebook_path" : "notebooks/chapter_2_6/Numerische_Verfahren_Nullstellen.jl", 
+                "video_id" : "",
+                "preview_image_url" : ""
             }
         ]
     }

@@ -4,311 +4,152 @@
 using Markdown
 using InteractiveUtils
 
-# ╔═╡ d67079d0-b911-46ea-bee4-90b7f8bc650c
+# ╔═╡ b4626833-6e3c-47f0-9de3-bd6d69b7f0ee
 begin
 using CairoMakie
 CairoMakie.activate!(type="svg")
 end
 
-# ╔═╡ e015a9f6-8d60-43bb-a687-dfd9b2e66a84
+# ╔═╡ d59a63ae-6e45-4f77-80f8-cadcffb83127
+let
+using Roots
+f = x -> sin(x)
+
+find_zero(f, (3, 4))
+end
+
+# ╔═╡ 939ab8cc-f879-49f0-96e8-3a441c9ccf1c
 using PlutoUI
 
-# ╔═╡ ecc185ce-c4af-11ed-332a-8799b5320cd5
+# ╔═╡ dfb8a9f0-c7cf-11ed-3bb0-d3649db5c9a5
 md"""
-# Iterative Abbildungen und *Banach*scher Fixpunktsatz
+# Numerische Verfahren zur Nullstellenbestimmung
 """
 
-# ╔═╡ f61c07dc-2302-4557-b757-52ec9aef26fd
+# ╔═╡ 40f000bb-6451-4366-a3bb-9f84001ff0f8
 md"""
-## Funktionen
+## **Newton**-Methode
 """
 
-# ╔═╡ 5dd4fc69-0d3a-4c13-86a9-17caa97d6089
-md"""
-In Julia gibt es eine ganze Schar an Möglichkeiten Funktionen zu definieren. 
-"""
-
-# ╔═╡ 3e5a45ba-1eb6-4d47-a82f-6d8fda1c885c
-let 
-f(x) = 2x + 3
-
-println(f(2.))
-	
-end
-
-# ╔═╡ 332e91a8-f130-436b-b380-7657cb70df09
-let
-f(x, y) = 2x + y + 3
-
-println(f(2., 3.)) 
-end
-
-# ╔═╡ 837df59e-fc30-46bf-9b08-9313aae632cc
-let 
-g = x -> 6x^2
-
-println(g(4.))
-end
-
-# ╔═╡ 21efdace-71a5-4edb-a077-632eb0968da5
-let 
-n = -3
-
-function fun(n)
-	n = n + 6
-end
-
-k = fun(n)
-
-println(k)
-println(n)
-
-end
-
-# ╔═╡ 6bcdea3b-c36a-4086-9b4a-f8c3f207a534
-md"""
-Es muss nicht zwangsläufgig ein return Befehl ausgeschrieben werden, auch wenn dieser deutlich die Lesbarkeit des Codes fördert:
-"""
-
-# ╔═╡ 852fa343-01ad-493f-82fc-6f47f81625df
-let 
-n = -3
-
-function fun(n)
-	n = n + 6
-	return n
-end
-
-k = fun(n)
-
-println(k)
-println(n)
-
-end
-
-# ╔═╡ bc8bfcb1-2082-4de6-85d1-840414ef4288
-md"""
-Interessant bei der oberen Funktion ist, dass *n* selbst nicht modifiziert wird, sondern stattdessen die Änderung in der Variablen *k* gespreichert wird. In vielen Anwendungen ist dieser Aspekt gewollt in anderen jedoch eher schädlich, da wir zusätzlichen Arbeitsspeicher benötigen. Eine Alternative bietet eine INPLACE Änderung von *n*. Wir modifizieren dabei *n* aktiv. Solche Funktiionen werden in Julia mit einen '!' am Ende gekennzeichnet. Es gibt hierzu kein Analogon in Matlab. Das zu modifizierende Argument wird laut Konvention meist als erstes genannt. Hier ein anschauliches Bespiel:
-"""
-
-# ╔═╡ 8c90af1f-ec43-4468-8fd4-fa3c7328e36d
-let 
-	
-function f!(out, x)
-    out .= x.^2
-end
-	
-x = rand(10)
-y = zeros(length(x))
-println(y)
-f!(y, x)
-println(y)
-end
-
-# ╔═╡ 8896a433-d1e7-4f1b-91d1-feabd0c37dbb
-md"""
-Eine der größten Charakterisktiken von Julia ist das sogenannte **multiple Dispatch** pattern. Wir können einer Funktion sagen, wie sie auf verschiedene Eingabe*typen* zu reagieren hat. Der Funktionsname bleibt jedoch identisch. 
-"""
-
-# ╔═╡ 6a4769fb-cbeb-4dd3-8900-46b29df9797a
+# ╔═╡ cd2d012a-5e53-41d9-9fac-f30026fd8ae7
 let 
 
-function operation(a::Float64, b::Float64)
-	return a + b 
-end
-
-function operation(a::Int64, b::Int64)
-	return a - b
-end
-
-a = 1. # Float64 Zahl
-b = 2. # Float64 Zahl 
-
-c = 1  # Int64 Zahl
-d = 2  # Int64 Zahl 
-
-println(operation(a, b))
-println(operation(c, d))
-
-end
-
-# ╔═╡ 4395220b-3315-4dc5-a25b-c56a92281153
-md"""
-Dies scheint zunächst wenig sinnvoll, jedoch können wir in Julia auch unsere eigenen *Typen* erstellen! Dazu eventuell ein anderes mal mehr ..   
-"""
-
-# ╔═╡ 61faa322-a8e2-4ebd-9798-d7252dd27494
-md"""
-## Fixpunktiteration
-"""
-
-# ╔═╡ bc3f61f5-fe80-4b5d-ad5c-aed57931135c
-md"""
-Fixpunktiteration für $x = cos(x)$ : 
-"""
-
-# ╔═╡ a6e935a8-c1a3-425c-a0c6-7bae0007da7b
-let 
-
-f(u) = cos(u)
-
-
-## In Julia können wir auch Funktionen selbst an Funktionen übergeben. Für eine bessere Performance und Lesbarkeit geben wir außerdem die Typen der Inputargumente an. 
-
-function fixpoint(fun::Function, x::Float64, ϵ_tol::Float64)
-	ϵ = ϵ_tol + 1.
-	x_old = x
-	while ϵ > ϵ_tol 
-		x_new = fun(x_old)
-		ϵ = abs(x_new - x_old)
+function newtonmethod(x_new::Real, ϵ_tol::Real, g::Function, Dg::Function)
+	x_old = x_new - ϵ_tol - 1
+	while abs(x_new - x_old) > ϵ_tol 
 		x_old = x_new
+		x_new = x_old - inv(Dg(x_old)) * g(x_old)
 	end
-	return x_old
+	return x_new
 end
 
-y = fixpoint(f, 0.5, 1e-5)
-println(y)
-println(f(y) - y)
+f(x) = cos(x) - x
+f′(x) = -sin(x) - 1 #' = \prime<TAB>
 
-fig = Figure(resolution = (700, 300))
-ax = Axis(fig[1, 1])
-lines!(ax, [0., 1.], [0., 1.], linewidth = 2)
-vlines!(ax, y, color=:red, linewidth = 2)
-lines!(ax, 0:0.01:1, cos.(0:0.01:1), color=:black, linewidth = 2)
-xlims!(ax, 0, 1)
-fig
+y = newtonmethod(0.5, 1e-5, f, f′)
+
 end
 
-# ╔═╡ 21c02245-7cdc-4f1d-a6c7-eab72ab326d4
+# ╔═╡ 25be1d3a-8bc7-4446-83e4-52cdcc21b346
 md"""
-## Logistische Abbildung
+## Vergleich **Newton**-Methode mit Fixpunktiteration
 """
 
-# ╔═╡ 03963a74-23be-490e-95ff-a33b698e3242
-md"""
-Logistische Abbildung: $a_{n+1} = \lambda a_{n} (1 - a_{n})$ 
-"""
-
-# ╔═╡ fbeb701c-424b-4cc0-9447-df98826cbb61
+# ╔═╡ 9ca474b9-ef48-4d71-b963-7980e09f450f
 let 
 
-function logisticmap(λ::Float64, a_start::Float64, iters::Integer)
-	x_coords = Float64[]
-	y_coords = Float64[]
-	a_old = a_start
-	a = Float64[a_old]
-	push!(x_coords, a_start)
-	push!(y_coords, 0.)
-
+function fixpoint_iters(x::Real, iters::Integer, g::Function)	
+	x_old = x
+	iter_arr = zeros(iters + 1)
+	iter_arr[1] = x_old
 	for iter in 1:iters 
-		a_new = λ * a_old * (1 - a_old)
-		push!(a, a_new)
-
-		# Cobweb
-		push!(x_coords, a_old)
-		push!(x_coords, a_old)
-
-		push!(y_coords, a_old)
-		push!(y_coords, a_new)
-		a_old = a_new
+		x_new = g(x_old)
+		x_old = x_new 
+		iter_arr[iter + 1] = x_new  
 	end
-	# Zusammenfügen der Koordinaten zu einer Matrix
-	coords = hcat(x_coords, y_coords)'
-	return a, coords 
+	return iter_arr
+end
+	
+function newtonmethod_iters(x::Real, iters::Integer, g::Function, Dg::Function)
+	x_old = x
+	iter_arr = zeros(iters + 1)
+	iter_arr[1] = x_old
+	for iter in 1:iters
+		x_new = x_old - g(x_old) * inv(Dg(x_old))
+		x_old = x_new
+		iter_arr[iter + 1] = x_new
+	end
+	return iter_arr
 end
 
-a1, coords1 = logisticmap(2.5, 0.5, 20)
-a2, coords2 = logisticmap(3.3, 0.5, 20)
+fp_arr = fixpoint_iters(0.5, 10, x->cos(x))
 
-v = 0.:0.01:1.
-	
-fig = Figure(resolution = (800, 800))
+nt_arr = newtonmethod_iters(0.5, 10, x->cos(x) - x, x->-sin(x) - 1)
 
-axtleft = Axis(fig[1, 1], title="Folge der logistischen Abbildung")
-scatter!(axtleft, a1, label=L"\lambda = 2.5")
-axislegend(axtleft)
-	
-axtright = Axis(fig[1, 2], title="Cobweb-Diagramm: Logistische Abbildung")	
-lines!(axtright, coords1[1, :], coords1[2, :])
-lines!(axtright, [0, 1], [0, 1])
-lines!(axtright, v, 2.5.* v .* (1 .- v))
+fig = Figure(resolution = (900, 300))
+ax1 = Axis(fig[1, 1], xlabel=L"n", ylabel=L"x")
+scatter!(ax1, fp_arr, marker = :diamond)
+scatter!(ax1, nt_arr)
 
-axbleft = Axis(fig[2, 1])
-scatter!(axbleft, a2, label=L"\lambda = 3.3")
-axislegend(axbleft, position=:rc)
-	
-axbright = Axis(fig[2, 2])	
-lines!(axbright, coords2[1, :], coords2[2, :])
-lines!(axbright, [0, 1], [0, 1])
-lines!(axbright, v, 3.3.* v .* (1 .- v))
-	
-fig	
+x_star = 0.739085133215160
+ax2 = Axis(fig[1, 2], xlabel=L"n", ylabel=L"|x - x^{\star}|")
+scatter!(ax2, abs.(fp_arr .- x_star), marker = :diamond)
+scatter!(ax2, abs.(nt_arr .- x_star))
+fig
+
+ax3 = Axis(fig[1, 3], xlabel=L"n", ylabel=L"log_{10}|x - x^{\star}|", yscale=log10)
+scatter!(ax3, abs.(fp_arr .- x_star), marker = :diamond)
+scatter!(ax3, abs.(nt_arr .- x_star))
+fig
 
 end
 
-# ╔═╡ 3c8b2145-a7b8-4e67-aaf1-f7559b66a0ff
+# ╔═╡ edb5d85c-ae26-42ee-b56f-46027b204060
 md"""
-## Bifurkationsdiagramm
+## Bisektions-Verfahren
 """
 
-# ╔═╡ c5f2ce10-d6d8-46df-9e94-9a5c7858e597
-let 
-
-function logisticmap(λ::Float64, a_start::Float64, iters::Integer)
-	a_old = a_start
-	a = Float64[a_old]
-
-	for iter in 1:iters 
-		a_new = λ * a_old * (1 - a_old)
-		push!(a, a_new)
-		a_old = a_new
-	end
+# ╔═╡ cb4a9a1b-0b65-42c1-8ef3-cbe61309e246
+let
 	
-	return a
+function bisection(a::Real, b::Real, ϵ_tol::Float64, f::Function)
+	# Ausgabe einer Fehlermeldung bei ungültigen Grenzen 
+	@assert !(f(a) * f(b) > 0.) "f(a)f(b) > 0"
+	low = a
+	up = b 
+	while up - low > ϵ_tol
+		mid = (low + up)/2 
+		if f(low) * f(mid) > 0
+			low = mid
+		else
+			up = mid
+		end
+	end
+	return (low + up) / 2
 end
 
-function bifurcation_logisticmap(λ_start::Float64, λ_end::Float64, a_start::Float64, n_trans::Integer, n_iter::Integer)
-	
-	# Da wir die Größe der Ausgangsarrays schon kennen, empfiehlt es sich diese schon vorab zu initialisieren. Dies fördert die Performance!
-	Δλ = 0.005
-	dim_λ = ceil(Int64, (λ_end - λ_start)/Δλ) + 1
-	dim_R = n_iter - n_trans + 1
+f = x -> cos(x) - x
 
-	results = zeros(Float64, dim_λ, dim_R)
-	λs = zeros(Float64, dim_λ, dim_R)
+println(bisection(-2., 3., 1e-6, f))
 
-	# In Julia können wir mittels enumerate(arr) gleichzeitg über Indizes und Elemente des arr iterieren. (Wir "nummerieren" das Array über das wir iterieren)
-	for (idx, λ) in enumerate(λ_start:Δλ:λ_end)
-		result = logisticmap(λ, a_start, n_iter)
-		res_steady = result[n_trans+1:end]
-		results[idx, :] .= res_steady
-		λs[idx, :] .= λ .* ones(length(res_steady))
-	end
-	
-	return results, λs
 end
 
+# ╔═╡ 0b7f9cad-d470-4a37-88b7-c3907809dfb7
+md"""
+## Nullstellenbestimmung
+"""
 
-R, Λ = bifurcation_logisticmap(2.5, 4., 0.5, 500, 1000)
-	
-# Aus unseren Matrizen konstruieren wir nun 2D-Punkte. Diese Punkte speichern wir dann in einen Array points. In Julia kurz und bündig:
-points = [Point2(Λ[idx], R[idx]) for idx in eachindex(R)]
+# ╔═╡ 50fc8f47-d620-4c4d-84b1-39448c5871cf
+md"""
+Mithilfe des *packages* Roots.jl können wir analog zu Matlab Nullstellen bestimmen. 
+"""
 
-# da Vektorgrafiken bei so vielen Punkten sehr groß werden, wählen wir "png" als Output
-CairoMakie.activate!(type="png")
-	
-fig = Figure(resolution = (1000, 800), fontsize=24)
-ax = Axis(fig[1, 1])
-scatter!(ax, points, markersize=3)	
-fig
-end 
-
-# ╔═╡ 74856e8b-42d7-4b2a-bc6d-1e03fd7bd00a
+# ╔═╡ 115c5ee3-3903-4574-939f-1a9a6b775852
 md"""
 # Appendix
 """
 
-# ╔═╡ e70eb389-0895-455a-823d-d83efede2365
+# ╔═╡ b7bbd4ca-485d-4834-8ed4-9143cfd53fde
 TableOfContents()
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
@@ -316,10 +157,12 @@ PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
+Roots = "f2b01f46-fcfa-551c-844a-d8ac1e96c665"
 
 [compat]
 CairoMakie = "~0.10.2"
 PlutoUI = "~0.7.50"
+Roots = "~2.0.10"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -328,7 +171,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.8.5"
 manifest_format = "2.0"
-project_hash = "dcd762971a5516e3fc8dfa2b3a8cc49e902482c4"
+project_hash = "f8531e55af102d88a9d3dfbfc95052e9e36c2e3f"
 
 [[deps.AbstractFFTs]]
 deps = ["ChainRulesCore", "LinearAlgebra"]
@@ -467,6 +310,11 @@ git-tree-sha1 = "fc08e5930ee9a4e03f84bfb5211cb54e7769758a"
 uuid = "5ae59095-9a9b-59fe-a467-6f913c188581"
 version = "0.12.10"
 
+[[deps.CommonSolve]]
+git-tree-sha1 = "9441451ee712d1aec22edad62db1a9af3dc8d852"
+uuid = "38540f10-b2f7-11e9-35d8-d573e4eb0ff2"
+version = "0.2.3"
+
 [[deps.Compat]]
 deps = ["Dates", "LinearAlgebra", "UUIDs"]
 git-tree-sha1 = "7a60c856b9fa189eb34f5f8a6f6b5529b7942957"
@@ -594,9 +442,9 @@ uuid = "7b1f6079-737a-58dc-b8bc-7a2ca5c1b5ee"
 
 [[deps.FillArrays]]
 deps = ["LinearAlgebra", "Random", "SparseArrays", "Statistics"]
-git-tree-sha1 = "d3ba08ab64bdfd27234d3f61956c966266757fe6"
+git-tree-sha1 = "3b245d1e50466ca0c9529e2033a3c92387c59c2f"
 uuid = "1a297f60-69ca-5386-bcde-b61e274b549b"
-version = "0.13.7"
+version = "0.13.9"
 
 [[deps.FixedPointNumbers]]
 deps = ["Statistics"]
@@ -658,9 +506,9 @@ version = "1.2.1"
 
 [[deps.GeometryBasics]]
 deps = ["EarCut_jll", "GeoInterface", "IterTools", "LinearAlgebra", "StaticArrays", "StructArrays", "Tables"]
-git-tree-sha1 = "fe9aea4ed3ec6afdfbeb5a4f39a2208909b162a6"
+git-tree-sha1 = "303202358e38d2b01ba46844b92e48a3c238fd9e"
 uuid = "5c1252a2-5f33-56bf-86c9-59e7332b4326"
-version = "0.4.5"
+version = "0.4.6"
 
 [[deps.Gettext_jll]]
 deps = ["Artifacts", "CompilerSupportLibraries_jll", "JLLWrappers", "Libdl", "Libiconv_jll", "Pkg", "XML2_jll"]
@@ -758,10 +606,10 @@ uuid = "bc367c6b-8a6b-528e-b4bd-a4b897500b49"
 version = "0.9.8"
 
 [[deps.Imath_jll]]
-deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
-git-tree-sha1 = "87f7662e03a649cffa2e05bf19c303e168732d3e"
+deps = ["Artifacts", "JLLWrappers", "Libdl"]
+git-tree-sha1 = "3d09a9f60edf77f8a4d99f9e015e8fbf9989605d"
 uuid = "905a6f67-0a94-5f89-b386-d35d92009cd1"
-version = "3.1.2+0"
+version = "3.1.7+0"
 
 [[deps.IndirectArrays]]
 git-tree-sha1 = "012e604e1c7458645cb8b436f8fba789a51b257f"
@@ -1073,10 +921,10 @@ uuid = "52e1d378-f018-4a11-a4be-720524705ac7"
 version = "0.3.2"
 
 [[deps.OpenEXR_jll]]
-deps = ["Artifacts", "Imath_jll", "JLLWrappers", "Libdl", "Pkg", "Zlib_jll"]
-git-tree-sha1 = "923319661e9a22712f24596ce81c54fc0366f304"
+deps = ["Artifacts", "Imath_jll", "JLLWrappers", "Libdl", "Zlib_jll"]
+git-tree-sha1 = "a4ca623df1ae99d09bc9868b008262d0c0ac1e4f"
 uuid = "18a262bb-aa17-5467-a713-aee519bc75cb"
-version = "3.1.1+0"
+version = "3.1.4+0"
 
 [[deps.OpenLibm_jll]]
 deps = ["Artifacts", "Libdl"]
@@ -1217,9 +1065,9 @@ version = "8.0.1001+0"
 
 [[deps.QuadGK]]
 deps = ["DataStructures", "LinearAlgebra"]
-git-tree-sha1 = "786efa36b7eff813723c4849c90456609cf06661"
+git-tree-sha1 = "6ec7ac8412e83d57e313393220879ede1740f9ee"
 uuid = "1fd47b50-473d-5c70-9696-f719f8f3bcdc"
-version = "2.8.1"
+version = "2.8.2"
 
 [[deps.REPL]]
 deps = ["InteractiveUtils", "Markdown", "Sockets", "Unicode"]
@@ -1268,6 +1116,12 @@ deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
 git-tree-sha1 = "6ed52fdd3382cf21947b15e8870ac0ddbff736da"
 uuid = "f50d1b31-88e8-58de-be2c-1cc44531875f"
 version = "0.4.0+0"
+
+[[deps.Roots]]
+deps = ["ChainRulesCore", "CommonSolve", "Printf", "Setfield"]
+git-tree-sha1 = "b45deea4566988994ebb8fb80aa438a295995a6e"
+uuid = "f2b01f46-fcfa-551c-844a-d8ac1e96c665"
+version = "2.0.10"
 
 [[deps.SHA]]
 uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
@@ -1367,9 +1221,9 @@ version = "0.1.1"
 
 [[deps.StaticArrays]]
 deps = ["LinearAlgebra", "Random", "StaticArraysCore", "Statistics"]
-git-tree-sha1 = "6aa098ef1012364f2ede6b17bf358c7f1fbe90d4"
+git-tree-sha1 = "7756ce473bd10b67245bdebdc8d8670a85f6230b"
 uuid = "90137ffa-7385-5640-81b9-e52037218182"
-version = "1.5.17"
+version = "1.5.18"
 
 [[deps.StaticArraysCore]]
 git-tree-sha1 = "6b7ba252635a5eff6a0b0664a41ee140a1c9e72a"
@@ -1400,9 +1254,9 @@ version = "1.3.0"
 
 [[deps.StructArrays]]
 deps = ["Adapt", "DataAPI", "GPUArraysCore", "StaticArraysCore", "Tables"]
-git-tree-sha1 = "b03a3b745aa49b566f128977a7dd1be8711c5e71"
+git-tree-sha1 = "521a0e828e98bb69042fec1809c1b5a680eb7389"
 uuid = "09ab397b-f2b6-538f-b94a-2f83cf4a842a"
-version = "0.6.14"
+version = "0.6.15"
 
 [[deps.SuiteSparse]]
 deps = ["Libdl", "LinearAlgebra", "Serialization", "SparseArrays"]
@@ -1421,9 +1275,9 @@ version = "1.0.1"
 
 [[deps.Tables]]
 deps = ["DataAPI", "DataValueInterfaces", "IteratorInterfaceExtensions", "LinearAlgebra", "OrderedCollections", "TableTraits", "Test"]
-git-tree-sha1 = "c79322d36826aa2f4fd8ecfa96ddb47b174ac78d"
+git-tree-sha1 = "1544b926975372da01227b382066ab70e574a3ec"
 uuid = "bd369af6-aec1-5ad0-b16a-f7cc5008161c"
-version = "1.10.0"
+version = "1.10.1"
 
 [[deps.Tar]]
 deps = ["ArgTools", "SHA"]
@@ -1627,31 +1481,19 @@ version = "3.5.0+0"
 """
 
 # ╔═╡ Cell order:
-# ╟─ecc185ce-c4af-11ed-332a-8799b5320cd5
-# ╠═d67079d0-b911-46ea-bee4-90b7f8bc650c
-# ╟─f61c07dc-2302-4557-b757-52ec9aef26fd
-# ╟─5dd4fc69-0d3a-4c13-86a9-17caa97d6089
-# ╠═3e5a45ba-1eb6-4d47-a82f-6d8fda1c885c
-# ╠═332e91a8-f130-436b-b380-7657cb70df09
-# ╠═837df59e-fc30-46bf-9b08-9313aae632cc
-# ╠═21efdace-71a5-4edb-a077-632eb0968da5
-# ╟─6bcdea3b-c36a-4086-9b4a-f8c3f207a534
-# ╠═852fa343-01ad-493f-82fc-6f47f81625df
-# ╟─bc8bfcb1-2082-4de6-85d1-840414ef4288
-# ╠═8c90af1f-ec43-4468-8fd4-fa3c7328e36d
-# ╟─8896a433-d1e7-4f1b-91d1-feabd0c37dbb
-# ╠═6a4769fb-cbeb-4dd3-8900-46b29df9797a
-# ╟─4395220b-3315-4dc5-a25b-c56a92281153
-# ╟─61faa322-a8e2-4ebd-9798-d7252dd27494
-# ╟─bc3f61f5-fe80-4b5d-ad5c-aed57931135c
-# ╠═a6e935a8-c1a3-425c-a0c6-7bae0007da7b
-# ╟─21c02245-7cdc-4f1d-a6c7-eab72ab326d4
-# ╟─03963a74-23be-490e-95ff-a33b698e3242
-# ╠═fbeb701c-424b-4cc0-9447-df98826cbb61
-# ╟─3c8b2145-a7b8-4e67-aaf1-f7559b66a0ff
-# ╠═c5f2ce10-d6d8-46df-9e94-9a5c7858e597
-# ╟─74856e8b-42d7-4b2a-bc6d-1e03fd7bd00a
-# ╠═e015a9f6-8d60-43bb-a687-dfd9b2e66a84
-# ╠═e70eb389-0895-455a-823d-d83efede2365
+# ╟─dfb8a9f0-c7cf-11ed-3bb0-d3649db5c9a5
+# ╟─40f000bb-6451-4366-a3bb-9f84001ff0f8
+# ╠═cd2d012a-5e53-41d9-9fac-f30026fd8ae7
+# ╟─25be1d3a-8bc7-4446-83e4-52cdcc21b346
+# ╠═b4626833-6e3c-47f0-9de3-bd6d69b7f0ee
+# ╠═9ca474b9-ef48-4d71-b963-7980e09f450f
+# ╟─edb5d85c-ae26-42ee-b56f-46027b204060
+# ╠═cb4a9a1b-0b65-42c1-8ef3-cbe61309e246
+# ╟─0b7f9cad-d470-4a37-88b7-c3907809dfb7
+# ╟─50fc8f47-d620-4c4d-84b1-39448c5871cf
+# ╠═d59a63ae-6e45-4f77-80f8-cadcffb83127
+# ╟─115c5ee3-3903-4574-939f-1a9a6b775852
+# ╠═939ab8cc-f879-49f0-96e8-3a441c9ccf1c
+# ╠═b7bbd4ca-485d-4834-8ed4-9143cfd53fde
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
