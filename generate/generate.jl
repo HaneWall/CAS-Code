@@ -223,7 +223,7 @@ end
 INSTRUCTORS = [
 	(name = "J. Starke", url = "http://www.jstarke.eu"),
 	(name = "H. Kösters", url = "https://www.mathematik.uni-rostock.de/unser-institut/professuren-apl-prof/wahrscheinlichkeitstheorie/prof-dr-holger-koesters/"),
-	(name = "J. Schlage-Puchta", url = "http://www.math.uni-rostock.de/~schlage-puchta/ZahlTheo.html")
+	(name = "J.C. Schlage-Puchta", url = "http://www.math.uni-rostock.de/~schlage-puchta/ZahlTheo.html")
 ] |> instructors
 
 # ╔═╡ d78c58e5-3ecb-45ee-972e-20fc90ece3cc

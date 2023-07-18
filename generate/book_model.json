@@ -1,56 +1,66 @@
 [
-    {
-        "title": "Einführung",
-        "contents": [
-	        {
-                "name": "GitHub & Open Source Software",
-                "notebook_path": "notebooks/week12/how_to_collaborate_on_software.jl",
-                "video_id": "7N9Vvc8amGM",
-                "preview_image_url": "https://user-images.githubusercontent.com/6933510/136199704-ba6d0586-34bf-490c-8fd0-6959ab42cd23.png"
-            }
-        ]
-    },
-    {
-        "title": "Analysis und numerische Mathematik",
-        "contents":[
-            {
-                "name": "Differenzial- und Integralrechnung",
-                "notebook_path": "notebooks/chapter_2_1/Differenzial_und_Integralrechnung.jl",
-                "video_id": "",
-                "preview_image_url": ""
-            },
-            {
-                "name": "Folgen, Grenzwerte und Konvergenz", 
-                "notebook_path": "notebooks/chapter_2_2/Folgen_Grenzwerte_Konvergenz.jl",
-                "video_id": "",
-                "preview_image_url": ""
-            },
-            {
-                "name": "Funktionen und Stetigkeit von Funktionen",
-                "notebook_path": "notebooks/chapter_2_3/Funktionen_und_Stetigkeit.jl",
-                "video_id": "", 
-                "preview_image_url": ""
-
-            },
-            {   
-                "name" : "Ableitungen von Funktionen und Linearisierung", 
-                "notebook_path": "notebooks/chapter_2_4/Ableitungen_von_Funktionen.jl",
-                "video_id": "",
-                "preview_image_url": ""
-                
-            },
-            {   
-                "name" : "Iterative Abbildungen und Banachscher Fixpunktsatz",
-                "notebook_path": "notebooks/chapter_2_5/Iterative_Abbildungen.jl",
-                "video_id": "",
-                "preview_image_url": ""
-            }, 
-            {
-                "name" : "Numerische Verfahren zur Nullstellenbestimmung",
-                "notebook_path" : "notebooks/chapter_2_6/Numerische_Verfahren_Nullstellen.jl", 
-                "video_id" : "",
-                "preview_image_url" : ""
-            }
-        ]
-    }
+  {
+    "title": "Einführung",
+    "contents": [
+      {
+        "name": "GitHub & Open Source Software",
+        "notebook_path": "notebooks/week12/how_to_collaborate_on_software.jl",
+        "video_id": "7N9Vvc8amGM",
+        "preview_image_url": "https://user-images.githubusercontent.com/6933510/136199704-ba6d0586-34bf-490c-8fd0-6959ab42cd23.png"
+      }
+    ]
+  },
+  {
+    "title": "Analysis und numerische Mathematik",
+    "contents": [
+      {
+        "name": "Differenzial- und Integralrechnung",
+        "notebook_path": "notebooks/chapter_2_1/Differenzial_und_Integralrechnung.jl",
+        "video_id": "",
+        "preview_image_url": ""
+      },
+      {
+        "name": "Folgen, Grenzwerte und Konvergenz",
+        "notebook_path": "notebooks/chapter_2_2/Folgen_Grenzwerte_Konvergenz.jl",
+        "video_id": "",
+        "preview_image_url": ""
+      },
+      {
+        "name": "Funktionen und Stetigkeit von Funktionen",
+        "notebook_path": "notebooks/chapter_2_3/Funktionen_und_Stetigkeit.jl",
+        "video_id": "",
+        "preview_image_url": ""
+      },
+      {
+        "name": "Ableitungen von Funktionen und Linearisierung",
+        "notebook_path": "notebooks/chapter_2_4/Ableitungen_von_Funktionen.jl",
+        "video_id": "",
+        "preview_image_url": ""
+      },
+      {
+        "name": "Iterative Abbildungen und Banachscher Fixpunktsatz",
+        "notebook_path": "notebooks/chapter_2_5/Iterative_Abbildungen.jl",
+        "video_id": "",
+        "preview_image_url": ""
+      },
+      {
+        "name": "Numerische Verfahren zur Nullstellenbestimmung",
+        "notebook_path": "notebooks/chapter_2_6/Numerische_Verfahren_Nullstellen.jl",
+        "video_id": "",
+        "preview_image_url": ""
+      },
+      {
+        "name": "Integration und Flächen unter Kurven",
+        "notebook_path": "notebooks/chapter_2_7/Integration_Umkehrung_Differenziation.jl",
+        "video_id": "",
+        "preview_image_url": ""
+      },
+      {
+        "name": "Differenzialgleichungen",
+        "notebook_path": "notebooks/chapter_2_8/Differenzialgleichungen.jl",
+        "video_id": "",
+        "preview_image_url": ""
+      }
+    ]
+  }
 ]
